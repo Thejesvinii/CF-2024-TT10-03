@@ -1,10 +1,10 @@
-timescale 1ns / 1ps
+'timescale 1ns / 1ps
 
-module axi(
+module tt_um_thejesvinii_axi(
     input clk,
     input reset,
     output reg [7:0] disp_hex_r,
-    output reg [3:0] an,
+    
 
     // Address read
     input ms_arvalid,
@@ -42,7 +42,7 @@ always @(posedge clk or posedge reset) begin
         sm_wready <= 1'b0;
         disp_hex_r <= 8'd0;
         read_address <= 4'b0;
-        an <= 4'b1110;
+       
     end else begin
         // Read operation (Only if no write is happening)
         if (ms_arvalid) begin
