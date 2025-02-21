@@ -24,7 +24,7 @@ This module performs the following key functions:
 - The `disp_hex_r` output displays the data from the memory based on the last read address.
 - The segment encoding for numbers 0-9 is pre-defined.
 
-## 2.1. Signal Description
+### 2.1. Signal Description
 
 | Signal         | Direction | Width | Description |
 |---------------|----------|-------|-------------|
@@ -61,11 +61,11 @@ This module performs the following key functions:
 1. Perform a read operation again and verify `disp_hex_r` output on a 7-segment display to see the overwritten data.
 
 
-## 4 Expected Outputs
+### 4 Expected Outputs
 - The 7-segment display should update based on read data.
 - Memory should reflect expected values after write operations.
 - Control signals (`sm_arready`, `sm_awready`, etc.) should follow expected behavior.
 
-## 5 Conclusion
+### 5 Conclusion
 This module provides a simple AXI-like master interface for an FPGA. It supports basic read/write operations and outputs data to a 7-segment display. Proper verification ensures correct operation in an FPGA environment.
 
