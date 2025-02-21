@@ -7,6 +7,10 @@
 
 
 module tt_um_thejesvinii_axi (
+    `ifdef USE_POWER_PINS
+    input VPWR,
+    input VGND,
+`endif
     input  wire [7:0] ui_in,    // Dedicated inputs
     output wire [7:0] uo_out,   // Dedicated outputs
     input  wire [7:0] uio_in,   // IOs: Input path
@@ -54,7 +58,7 @@ module tt_um_thejesvinii_axi (
     
     wire sm_wready=uio_out[7]
 
-
+    axi axi_inst(.clk(clk),.reset(rst_n),.disp_hex_r(disp_hex_r),.ms_arvalid(ms_arvalid),.SWM_arADDR(SWM_arADDR),.SWM_wdata(SWM_wdata),.sm_arready(sm_arready),.ms_rready(ms_rready),.sm_rvalid(sm_rvalid),.ms_awvalid(ms_awvalid),.sm_awready(sm_awready),.ms_wvalid(ms_wvalid),.sm_wready(sm_wready))
 
 
 endmodule
