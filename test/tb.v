@@ -1,49 +1,82 @@
-`default_nettype none
 `timescale 1ns / 1ps
 
-/* This testbench just instantiates the module and makes some convenient wires
-   that can be driven / tested by the cocotb test.py.
-*/
-module tb ();
+module axi_tb();
 
-  // Dump the signals to a VCD file. You can view it with gtkwave or surfer.
-  initial begin
-    $dumpfile("tb.vcd");
-    $dumpvars(0, tb);
-    #1;
-  end
+    // Testbench signals
+    reg clk;
+    reg reset;
+    wire [7:0] disp_hex_r;
 
-  // Wire up the inputs and outputs:
-  reg clk;
-  reg rst_n;
-  reg ena;
-  reg [7:0] ui_in;
-  reg [7:0] uio_in;
-  wire [7:0] uo_out;
-  wire [7:0] uio_out;
-  wire [7:0] uio_oe;
-`ifdef GL_TEST
-  wire VPWR = 1'b1;
-  wire VGND = 1'b0;
-`endif
+    // AXI read signals
+    reg ms_arvalid;
+    reg [3:0] SWM_arADDR;
+    wire sm_arready;
+    reg ms_rready;
+    wire sm_rvalid;
 
-  // Replace tt_um_example with your module name:
-  tt_um_example user_project (
+    // AXI write signals
+    reg ms_awvalid;
+    wire sm_awready;
+    reg ms_wvalid;
+    reg [3:0] SWM_wdata;
+    wire sm_wready;
 
-      // Include power ports for the Gate Level test:
-`ifdef GL_TEST
-      .VPWR(VPWR),
-      .VGND(VGND),
-`endif
+    // Instantiate the DUT (Device Under Test)
+    tt_um_thejesvinii_axi uut (
+        .clk(clk),
+        .reset(reset),
+        .disp_hex_r(disp_hex_r),
+        .ms_arvalid(ms_arvalid),
+        .SWM_arADDR(SWM_arADDR),
+        .sm_arready(sm_arready),
+        .ms_rready(ms_rready),
+        .sm_rvalid(sm_rvalid),
+        .ms_awvalid(ms_awvalid),
+        .sm_awready(sm_awready),
+        .ms_wvalid(ms_wvalid),
+        .SWM_wdata(SWM_wdata),
+        .sm_wready(sm_wready)
+    );
 
-      .ui_in  (ui_in),    // Dedicated inputs
-      .uo_out (uo_out),   // Dedicated outputs
-      .uio_in (uio_in),   // IOs: Input path
-      .uio_out(uio_out),  // IOs: Output path
-      .uio_oe (uio_oe),   // IOs: Enable path (active high: 0=input, 1=output)
-      .ena    (ena),      // enable - goes high when design is selected
-      .clk    (clk),      // clock
-      .rst_n  (rst_n)     // not reset
-  );
+    // Clock generation
+    always #5 clk = ~clk; // 10 ns clock period
+
+    initial begin
+        // Initialize signals
+        clk = 0;
+        reset = 1;
+        ms_arvalid = 0;
+        SWM_arADDR = 4'b0000;
+        ms_rready = 0;
+        ms_awvalid = 0;
+        ms_wvalid = 0;
+        SWM_wdata = 4'b0000;
+
+        // Reset phase
+        #20 reset = 0;
+
+        // Write operation test
+        #10 ms_awvalid = 1; SWM_arADDR = 4'b0010; // Target write address
+        #10 ms_wvalid = 1; SWM_wdata = 4'b0100;  // Data source address
+        #10 ms_awvalid = 0; ms_wvalid = 0; // Deassert signals
+
+        // Read operation test
+        #20 ms_arvalid = 1; SWM_arADDR = 4'b0010; // Read from written address
+        #10 ms_rready = 1;
+        #10 ms_arvalid = 0;
+        #10 ms_rready = 0;
+
+        // Observe `disp_hex_r` for expected value
+        #50;
+
+        // End simulation
+        $finish;
+    end
+
+    // Dump waveform for GTKWave
+    initial begin
+        $dumpfile("axi_tb.vcd");
+        $dumpvars(0, axi_tb);
+    end
 
 endmodule
