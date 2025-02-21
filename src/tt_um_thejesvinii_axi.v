@@ -1,100 +1,60 @@
-'timescale 1ns / 1ps
+/*
+ * Copyright (c) 2024 Your Name
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
-module tt_um_thejesvinii_axi(
-    input clk,
-    input reset,
-    output reg [7:0] disp_hex_r,
+`default_nettype none
+
+
+module tt_um_thejesvinii_axi (
+    input  wire [7:0] ui_in,    // Dedicated inputs
+    output wire [7:0] uo_out,   // Dedicated outputs
+    input  wire [7:0] uio_in,   // IOs: Input path
+    output wire [7:0] uio_out,  // IOs: Output path
+    output wire [7:0] uio_oe,   // IOs: Enable path (active high: 0=input, 1=output)
+    input  wire       ena,      // always 1 when the design is powered, so you can ignore it
+    input  wire       clk,      // clock
+    input  wire       rst_n     // reset_n - low to reset
+);
+    wire [3:0] SWM_arADDR=ui_in[3:0];    // read address
+    wire [3:0]SWM_wdata=ui_in[7:4]; 
+
+
+  // All output pins must be assigned. If not used, assign to 0.
+    // Example: ou_out is the sum of ui_in and uio_in
+    assign uio_out [3:0]=4'b0;
+    assign uio_in [3:0]=4'b1;
+    assign uio_in[7:4]=4'b0;
+
+    assign uio_out [7:4]= 4'b1;
+    
+    assign uio_oe[3:0] = 4'b0;
+    assign uio_oe[7:4] = 4'b1;
+    
+
+  // List all unused inputs to prevent warnings
+    wire _unused = &{ena,uio_in[4],uio_in[5],uio_in[6],uio_in[7],1'b0};
+
+    wire disp_hex_r[7:0]=uo_out[7:0],
     
 
     // Address read
-    input ms_arvalid,
-    input [3:0] SWM_arADDR, // Write address
-    output reg sm_arready,
-    input ms_rready,
-    output reg sm_rvalid,
+    wire ms_arvalid=uio_in[0],
+   
+    wire sm_arready=uio_out[4],
+    wire ms_rready=uio_in[1],
+    wire sm_rvalid=uio_out[5],
 
     // Write address
-    input ms_awvalid,
-    output reg sm_awready,
+    wire ms_awvalid=uio_in[2],
+    wire sm_awready=uio_out[6],
 
     // Write data (4-bit address for data)
-    input ms_wvalid,
-    input [3:0] SWM_wdata,
-    output reg sm_wready
-);
+    wire ms_wvalid=uio_in[3],
+    
+    wire sm_wready=uio_out[7]
 
-    reg [3:0] read_address; // readAddress and Address where data will be written
-reg [7:0] memory_w [0:15]; // Memory array
-reg [7:0] LED_out; // Output for LEDs
 
-// Memory Initialization
-integer i;
-initial begin
-    for (i = 0; i < 16; i = i + 1)
-        memory_w[i] = i; // Initialize memory with some values
-end
 
-always @(posedge clk or posedge reset) begin
-    if (reset) begin
-        sm_arready <= 1'b0;
-        sm_rvalid <= 1'b0;
-        sm_awready <= 1'b0;
-        sm_wready <= 1'b0;
-        disp_hex_r <= 8'd0;
-        read_address <= 4'b0;
-       
-    end else begin
-        // Read operation (Only if no write is happening)
-        if (ms_arvalid) begin
-            sm_arready <= 1'b1;
-            read_address <= SWM_arADDR; // Set write address from input
-        end
-
-        if(ms_arvalid && sm_arready)begin
-            sm_rvalid <= 1'b1;
-        end
-
-        if (sm_rvalid && ms_rready) begin
-            disp_hex_r <= LED_out; // Output the value from memory based on read address
-            sm_arready <= 1'b0; // Reset ready signal after read operation
-        end
-
-        if (!ms_rready) begin
-            sm_rvalid <= 1'b0; // Reset read valid signal when not ready
-        end
-
-        // Write operation
-        if (ms_awvalid) begin
-            sm_awready <= (SWM_arADDR != 4'b0000); // Indicate ready for address writing
-        end else begin
-            sm_awready <= 1'b0; // Deassert when not valid
-        end
-
-        if (ms_wvalid && sm_awready) begin
-            // Use SWM_wdata as an index to fetch data from memory and write it to the specified address
-            memory_w[read_address] <= memory_w[SWM_wdata]; // Write data from specified address into the target address
-            sm_wready <= 1'b1; // Indicate write complete
-        end else begin
-            sm_wready <= 1'b0; // Deassert when not valid
-        end
-    end
-end
-
-// LED Output Mapping based on memory contents at the current read address.
-always @(*) begin
-    case(memory_w[read_address])
-        8'd0: LED_out = 8'b00000011; // "0"
-        8'd1: LED_out = 8'b10011111; // "1"
-        8'd2: LED_out = 8'b00100101; // "2"
-        8'd3: LED_out = 8'b00001101; // "3"
-        8'd4: LED_out = 8'b10011001; // "4"
-        8'd5: LED_out = 8'b01001001; // "5"
-        8'd6: LED_out = 8'b01000001; // "6"
-        8'd7: LED_out = 8'b00011111; // "7"
-        8'd8: LED_out = 8'b00000001; // "8"
-        8'd9: LED_out = 8'b00001001; // "9"
-        default: LED_out = memory_w[read_address]; // Default to current value in memory at the specified address.
-    endcase
-end
 
 endmodule
