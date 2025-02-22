@@ -1,7 +1,7 @@
 # Tiny Tapeout project information
 project:
   title:        "AXI"      # Project title
-  author:       "CF-TT10-03"      # Your name
+  author:       "CF_TT10_03"      # Your name
   discord:      "neel077we"      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
   description:  "Implementation of simple AXI Interface between master(switches) and slave(7-segment display)"      # One line description of what your project does
   language:     "Verilog" # other examples include SystemVerilog, Amaranth, VHDL, etc
