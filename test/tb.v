@@ -56,7 +56,7 @@ module tb();
     SWM_wdata = 0;
 
     // Reset Pulse
-    #10 rst_n = 1;
+    #10 rst_n = 0;
 
     // Read from Address 3
     #20 ms_arvalid = 1;
