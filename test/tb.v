@@ -25,19 +25,14 @@ module tb();
 
   // Instantiate DUT (Device Under Test)
   tt_um_thejesvinii_axi uut (
-      .clk(clk),
-      .reset(rst_n),
-      .disp_hex_r(disp_hex_r),
-      .ms_arvalid(ms_arvalid),
-      .SWM_arADDR(SWM_arADDR),
-      .sm_arready(sm_arready),
-      .ms_rready(ms_rready),
-      .sm_rvalid(sm_rvalid),
-      .ms_awvalid(ms_awvalid),
-      .sm_awready(sm_awready),
-      .ms_wvalid(ms_wvalid),
-      .SWM_wdata(SWM_wdata),
-      .sm_wready(sm_wready)
+     .clk(clk),
+        .rst_n(rst_n),
+    .ui_in({SWM_wdata, SWM_arADDR}),  // Assign write data to upper bits of ui_in
+    .uo_out(disp_hex_r),  // Assign full, empty, and read data to output
+    .uio_in({4'b0000,ms_wvalid,ms_awvalid,ms_rready,ma_arvalid}),  
+    .uio_out(sm_wready,sm_awready,sm_rvalid,sm_arready,4'b0000),
+        .uio_oe(),
+        .ena(1'b1)  // Always enabled
   );
 
   // Test Sequence
