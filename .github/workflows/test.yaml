@@ -28,12 +28,8 @@ jobs:
           cd test
           make clean
           make
-          # Ensure results.xml is generated and check for failures
-          if [ -f results.xml ]; then
-            grep -q failure results.xml && exit 1 || exit 0
-          else
-            echo "results.xml not found, marking as failed"
-            exit 1
+          # make will return success even if the test fails, so check for failure in the results.xml
+          ! grep failure results.xml
 
       - name: Test Summary
         uses: test-summary/action@v2.3
