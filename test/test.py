@@ -1,6 +1,7 @@
 import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import ClockCycles, RisingEdge
+from cocotb.result import TestFailure
 
 @cocotb.test()
 async def test_axi(dut):
@@ -20,7 +21,8 @@ async def test_axi(dut):
     await ClockCycles(dut.clk, 2)
 
     # Check if `uio_oe` is set correctly
-    assert int(dut.uio_oe.value) == 0xF0  # Upper 4 bits should be outputs
+    if int(dut.uio_oe.value) != 0xF0:
+        raise TestFailure(f"uio_oe value is incorrect: {int(dut.uio_oe.value)} != 0xF0")
 
     dut._log.info("READ OPERATION")
     dut.ms_arvalid.value = 1
@@ -38,9 +40,10 @@ async def test_axi(dut):
             break
         await RisingEdge(dut.clk)
     else:
-        assert False, "Timeout waiting for sm_rvalid"
+        raise TestFailure("Timeout waiting for sm_rvalid")
 
-    assert int(dut.disp_hex_r.value) == 3
+    if int(dut.disp_hex_r.value) != 3:
+        raise TestFailure(f"disp_hex_r value is incorrect: {int(dut.disp_hex_r.value)} != 3")
 
     dut._log.info("WRITE OPERATION")
     dut.ms_awvalid.value = 1
@@ -69,8 +72,9 @@ async def test_axi(dut):
             break
         await RisingEdge(dut.clk)
     else:
-        assert False, "Timeout waiting for sm_rvalid"
+        raise TestFailure("Timeout waiting for sm_rvalid")
 
-    assert int(dut.disp_hex_r.value) == 4
+    if int(dut.disp_hex_r.value) != 4:
+        raise TestFailure(f"disp_hex_r value is incorrect: {int(dut.disp_hex_r.value)} != 4")
 
     dut._log.info("All tests passed successfully!")
