@@ -33,9 +33,13 @@ async def test_axi(dut):
     await ClockCycles(dut.clk, 2)
 
     # Wait for `sm_rvalid` before reading
-    while dut.sm_rvalid.value == 0:
+    for _ in range(100):
+        if dut.sm_rvalid.value:
+            break
         await RisingEdge(dut.clk)
-    
+    else:
+        assert False, "Timeout waiting for sm_rvalid"
+
     assert int(dut.disp_hex_r.value) == 3
 
     dut._log.info("WRITE OPERATION")
@@ -60,8 +64,12 @@ async def test_axi(dut):
     await ClockCycles(dut.clk, 2)
 
     # Wait for `sm_rvalid` before reading
-    while dut.sm_rvalid.value == 0:
+    for _ in range(100):
+        if dut.sm_rvalid.value:
+            break
         await RisingEdge(dut.clk)
+    else:
+        assert False, "Timeout waiting for sm_rvalid"
 
     assert int(dut.disp_hex_r.value) == 4
 
