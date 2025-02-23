@@ -23,7 +23,9 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Run Tiny Tapeout Precheck
-        uses: TinyTapeout/tt-gds-action/precheck@tt10
+        uses: TinyTapeout/tt-gds-action/precheck to be related to the "gds" job or one of its dependencies.
+
+Here are some steps to troubleshoot and potentially resolve@tt10
 
   gl_test:
     needs: gds
@@ -34,14 +36,23 @@ jobs:
         with:
           submodules: recursive
 
-      - name: GL test
+      the issue:
+
+1. **Check the Cache Key:**
+   Ensure that the cache key used in the workflow is valid - name: GL test
         uses: TinyTapeout/tt-gds-action/gl_test@tt10
 
   viewer:
     needs: gds
-    runs-on: ubuntu-24.04
+ and not causing an issue.
+   ```yaml
+   - name:    runs-on: ubuntu-24.04
     permissions:
       pages: write      # to deploy to Pages
-      id-token: write   # to verify the deployment originates from an appropriate source
+      Cache APT packages
+     uses: actions/cache@v2
+     with id-token: write   # to verify the deployment originates from an appropriate source
     steps:
-      - uses: TinyTapeout/tt-gds-action/viewer@tt10
+      - uses: TinyTape:
+       path: ~/cache-apt-pkgs
+       key: cache-out/tt-gds-action/viewer@apt-pkgs_{{ runner.os }}_{{ hashFiles('**/lockfilestt10
