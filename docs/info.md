@@ -42,7 +42,7 @@ The `tt_um_thejesvinii_axi` module is an AXI-like master interface implemented f
 
 ---
 
-## **Expected Outputs**
+## **Expected hardware**
 ✔ **7-segment display updates based on read data.**  
 ✔ **Memory values change correctly after write operations.**  
 ✔ **Control signals (`sm_arready`, `sm_awready`, etc.) behave as expected.**
