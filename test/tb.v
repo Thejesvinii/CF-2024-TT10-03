@@ -19,21 +19,25 @@ module tb();
   wire sm_awready;
   wire sm_wready;
   wire [7:0] disp_hex_r;
+  wire [3:0] sm_unused;  // Define a signal for unused bits
 
   // Clock Generation
   always #5 clk = ~clk;  // 10ns clock period (100MHz)
 
   // Instantiate DUT (Device Under Test)
   tt_um_thejesvinii_axi uut (
-     .clk(clk),
-        .rst_n(rst_n),
+    .clk(clk),
+    .rst_n(rst_n),
     .ui_in({SWM_wdata, SWM_arADDR}),  // Assign write data to upper bits of ui_in
-    .uo_out(disp_hex_r),  // Assign full, empty, and read data to output
-    .uio_in({4'b0000,ms_wvalid,ms_awvalid,ms_rready,ma_arvalid}),  
-    .uio_out({sm_wready,sm_awready,sm_rvalid,sm_arready,4'b0000}),
-        .uio_oe(),
-        .ena(1'b1)  // Always enabled
+    .uo_out(disp_hex_r),              // Assign display output
+    .uio_in({1'b0, 4'b0000, ms_wvalid, ms_awvalid, ms_rready, ms_arvalid}), // Ensure correct bit-width
+    .uio_out({sm_wready, sm_awready, sm_rvalid, sm_arready, sm_unused}),  // Use sm_unused instead of 4'd0
+    .uio_oe(),                        // Output enable not used
+    .ena(1'b1)                         // Always enabled
   );
+
+  // Unused bits assignment
+  assign sm_unused = 4'b0000;  // Prevents unconnected warnings
 
   // Test Sequence
   initial begin
@@ -52,6 +56,7 @@ module tb();
 
     // Reset Pulse
     #10 rst_n = 0;
+    #10 rst_n = 1;
 
     // Read from Address 3
     #20 ms_arvalid = 1;
