@@ -18,6 +18,8 @@ module tt_um_thejesvinii_axi (
     input  wire       clk,      // Clock
     input  wire       rst_n     // Active-low reset
 );
+    assign uio_out[3:0] = 4'b0000; // Fix: Prevent undriven warning
+   assign uio_in[7:4] = 4'b0000; // Fix: Prevent undriven warning
 
     // Read and Write Addressing
     wire [3:0] SWM_arADDR = ui_in[3:0];   // Read address from switches
