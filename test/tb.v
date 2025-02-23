@@ -26,7 +26,7 @@ module tb();
   // Instantiate DUT (Device Under Test)
   axi uut (
       .clk(clk),
-      .reset(~rst_n),
+      .reset(rst_n),
       .disp_hex_r(disp_hex_r),
       .ms_arvalid(ms_arvalid),
       .SWM_arADDR(SWM_arADDR),
@@ -56,7 +56,7 @@ module tb();
     SWM_wdata = 0;
 
     // Reset Pulse
-    #10 rst_n = 0;
+    #10 rst_n = 1;
 
     // Read from Address 3
     #20 ms_arvalid = 1;
