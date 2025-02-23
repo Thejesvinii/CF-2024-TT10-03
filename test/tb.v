@@ -30,7 +30,7 @@ module tb();
     .ui_in({SWM_wdata, SWM_arADDR}),  // Assign write data to upper bits of ui_in
     .uo_out(disp_hex_r),  // Assign full, empty, and read data to output
     .uio_in({4'b0000,ms_wvalid,ms_awvalid,ms_rready,ma_arvalid}),  
-    .uio_out(sm_wready,sm_awready,sm_rvalid,sm_arready,4'b0000),
+    .uio_out({sm_wready,sm_awready,sm_rvalid,sm_arready,4'b0000}),
         .uio_oe(),
         .ena(1'b1)  // Always enabled
   );
