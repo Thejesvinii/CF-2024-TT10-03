@@ -24,7 +24,7 @@ module tb();
   always #5 clk = ~clk;  // 10ns clock period (100MHz)
 
   // Instantiate DUT (Device Under Test)
-  axi uut (
+  tt_um_thejesvinii_axi uut (
       .clk(clk),
       .reset(rst_n),
       .disp_hex_r(disp_hex_r),
