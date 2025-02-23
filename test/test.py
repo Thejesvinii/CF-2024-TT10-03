@@ -14,9 +14,9 @@ async def test_project(dut):
     dut.ena.value = 1
 
     # Reset
-    dut.rst_n.value = 0
-    await ClockCycles(dut.clk, 10)
     dut.rst_n.value = 1
+    await ClockCycles(dut.clk, 10)
+    dut.rst_n.value = 0
     await ClockCycles(dut.clk, 2)
 
     # Check if `uio_oe` is set correctly
