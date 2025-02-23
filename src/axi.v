@@ -1,10 +1,8 @@
-`default_nettype none
+
+`timescale 1ns/1ps
 
 module axi (
-    `ifdef USE_POWER_PINS
-    input VPWR,
-    input VGND,
-    `endif
+   
     input clk,
     input reset,
     output reg [7:0] disp_hex_r,
