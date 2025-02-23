@@ -47,7 +47,7 @@ module tb();
 
     // Initialize Inputs
     clk = 0;
-    rst_n = 0;
+    rst_n = 1;
     ms_arvalid = 0;
     SWM_arADDR = 0;
     ms_rready = 0;
@@ -56,7 +56,7 @@ module tb();
     SWM_wdata = 0;
 
     // Reset Pulse
-    #10 rst_n = 1;
+    #10 rst_n = 0;
 
     // Read from Address 3
     #20 ms_arvalid = 1;
