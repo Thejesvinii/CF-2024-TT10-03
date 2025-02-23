@@ -1,5 +1,5 @@
 `default_nettype none
-
+`timescale 1ns/1ps
 module tt_um_thejesvinii_axi (
     `ifdef USE_POWER_PINS
     input VPWR,
