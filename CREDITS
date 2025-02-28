@@ -4,18 +4,18 @@
 *Project Title:* AXI-LITE
 
 ### Team Members
-- Karthika Devi K
-  - Class: IV Year B.E. ECE
-  - Department of ECE, CEG
-  - Email: devipriya1474@gmail.com
-- Karthika Devi K
-  - Class: IV Year B.E. ECE
-  - Department of ECE, CEG
-  - Email: devipriya1474@gmail.com
-- Reema Shivva
+- Dhinesh Kumar S
   - Class: III Year B.E. ECE
   - Department of ECE, CEG
-  - Email: reemashivva05@gmail.com
+  - Email: dhineshkumar160705@gmail.com
+- Karthika Devi K
+  - Class: IV Year B.E. ECE
+  - Department of ECE, CEG
+  - Email: devipriya1474@gmail.com
+- Meenachi M
+  - Class: I Year B.E. ECE
+  - Department of ECE, CEG
+  - Email: meenameena200720@gmail.com
 - Nelaiyandar T
   - Class: IV Year B.E. ECE
   - Department of ECE, CEG
@@ -47,11 +47,8 @@ This project is part of the TinyTapeout 10 (TT10) shuttle program, with Team ID:
 ## Research References
 This project builds upon the following research works:
 
-1. Clifford E. Cummings. (2005). Simulation and Synthesis Techniques for Asynchronous
-FIFO Design. SNUG San Jose 2002.
-   - This paper helped us to understand the concept and working of an Asynchronous FIFO.
-2. Sivaram Durai.(https://github.com/sivaram-07/Async-FIFO)
-   - This provided us with a detailed understanding of how to integrate the concepts into programming.  
+1. https://developer.arm.com/documentation/ihi0022/latest/
+   - This website helped us to understand the concept and working of AXI Protocol.  
 
 # CEG Fabless Initiative Credits
 ## Platform Credits
